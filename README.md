@@ -68,6 +68,12 @@ iou  # iou低于该阈值的物体会被忽略
 repeat_iou  # 去除重复bounding box
 ```
 
+*写入到文件的格式为：
+
+```
+<frame>, <id>, <bb_left>, <bb_top>, <bb_width>, <bb_height>, <conf>, <x>, <y>, <z>
+```
+
 ---
 
 # 训练自己的模型 Training
