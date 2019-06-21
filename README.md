@@ -22,14 +22,14 @@ DEFAULTS = {
         "anchors_path": './model_data/yolo_anchors.txt',
         "classes_path": './model_data/coco_classes.txt',
         "gpu_num": 1,
-        "image": True,
+        "image": False,
         "tracker": True,
         "write_to_file": True,
-        "input": './input/VID2.mp4',
-        "output": './output/VID2.mp4',
+        "input": './input/Demo2_tiny.mp4',
+        "output": './output/Demo2_tiny.mp4',
         "output_path": './output/',
         "score": 0.4,  # threshold
-        "iou": 0.45,  # threshold
+        "iou": 0.4,  # threshold
         "repeat_iou": 0.95,  # threshold
     }
 ```
@@ -124,7 +124,7 @@ python train.py
 4. 暂时不会搞DeepSort里的图像特征抽取，只用SORT的话会导致ID Switch过于频繁，对于有遮挡物、双向重交通流等
 情况，ID会非常不准确
 
-5. DEMO上传至[百度云](https://pan.baidu.com/s/1VLKI8OGDbzsfqtzMe1amxg) PW: pb34
+5. **DEMO**上传至[百度云](https://pan.baidu.com/s/1VLKI8OGDbzsfqtzMe1amxg) PW: pb34
 
 6. 有点懒，以后弄个英语README  I am exhausted, En version to be done.
 
