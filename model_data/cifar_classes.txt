@@ -1,0 +1,10 @@
+boy
+girl
+man
+woman
+bicycle
+bus
+motorcycle
+pickuptruck
+streetcar
+tank
