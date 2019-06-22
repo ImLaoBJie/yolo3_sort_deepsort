@@ -22,7 +22,6 @@ from keras.utils import multi_gpu_model
 class YOLO(object):
     _defaults = {
         "model_image_size": (416, 416),
-        "gpu_num": 1,
     }
 
     @classmethod
@@ -40,6 +39,7 @@ class YOLO(object):
         self.sess = K.get_session()
         self.boxes, self.scores, self.classes = self.generate()
         self.frame = 1
+        self.mot_tracker = None
 
     def _get_class(self):
         classes_path = os.path.expanduser(self.classes_path)
@@ -101,7 +101,7 @@ class YOLO(object):
                 score_threshold=self.score, iou_threshold=self.iou)
         return boxes, scores, classes
 
-    def detect_image(self, image, sort_class=None, fo=None):
+    def detect_image(self, image, fo=None):
         start = timer()
 
         if self.model_image_size != (None, None):
@@ -134,8 +134,9 @@ class YOLO(object):
             sort.delete_repeat_bbox(list(out_boxes), list(out_scores), list(out_classes), self.repeat_iou)
 
         # open or close tracker
-        if self.tracker and (sort_class is not None):
-            out_boxes, out_scores, out_classes, object_id = sort.sort_image(sort_class, out_boxes, out_scores, out_classes)
+        if self.tracker and (self.mot_tracker is not None):
+            out_boxes, out_scores, out_classes, object_id = \
+                sort.sort_image(self.mot_tracker, out_boxes, out_scores, out_classes, self.image)
         else:
             object_id = np.concatenate(np.zeros((1, len(out_boxes))))
 
@@ -217,6 +218,7 @@ def detect_video(yolo, video_path, output_path=""):
     prev_time = timer()
 
     mot_tracker = sort.Sort()
+    yolo.mot_tracker = mot_tracker
 
     if yolo.write_to_file:
         emptyFile = open(yolo.output_path + 'result.dat', 'w')
@@ -229,7 +231,7 @@ def detect_video(yolo, video_path, output_path=""):
             image = Image.fromarray(frame)
         except AttributeError:
             break
-        image = yolo.detect_image(image, mot_tracker, emptyFile)
+        image = yolo.detect_image(image, emptyFile)
         result = np.asarray(image)
         curr_time = timer()
         exec_time = curr_time - prev_time

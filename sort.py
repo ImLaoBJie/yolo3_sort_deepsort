@@ -1,15 +1,8 @@
 from __future__ import print_function
 
 from numba import jit
-import os.path
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from skimage import io
 from sklearn.utils.linear_assignment_ import linear_assignment
-import glob
-import time
-import argparse
 from filterpy.kalman import KalmanFilter
 
 
@@ -255,7 +248,7 @@ class Sort(object):
             return np.empty((0, 5))
 
 
-def sort_image(sort_class, out_boxes, out_scores, out_classes):
+def sort_image(sort_class, out_boxes, out_scores, out_classes, image_mode):
     dets = []
 
     for i in range(0, len(out_boxes)):
@@ -263,6 +256,9 @@ def sort_image(sort_class, out_boxes, out_scores, out_classes):
 
     dets = np.array(dets)
 
+    # Initialization
+    if image_mode:
+        KalmanBoxTracker.count = 0
     trackers = sort_class.update(dets)
 
     out_boxes = []

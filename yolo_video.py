@@ -41,12 +41,16 @@ def detect_img(yolo):
             print('Open Error! Try again!')
             continue
         else:
+            # Initialization
             mot_tracker = sort.Sort()
+            yolo.mot_tracker = mot_tracker
+            yolo.frame = 1
+
             if yolo.write_to_file:
                 emptyFile = open(yolo.output_path + 'result.dat', 'w')
             else:
                 emptyFile = None
-            r_image = yolo.detect_image(image, mot_tracker, emptyFile)
+            r_image = yolo.detect_image(image, emptyFile)
             if yolo.write_to_file:
                 emptyFile.close()
             r_image.save(yolo.__dict__['output_path'] + 'output.png', 'png')
