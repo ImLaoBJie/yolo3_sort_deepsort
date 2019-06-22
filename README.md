@@ -8,6 +8,8 @@ SORT的实现借鉴：[abewley/sort](https://github.com/abewley/sort)
 
 参考文献：[SIMPLE ONLINE AND REALTIME TRACKING](https://arxiv.org/pdf/1602.00763.pdf)
 
+演示视频：[Demo](https://www.bilibili.com/video/av56450343/)
+
 ---
 
 # 搞快点 Quick Start
