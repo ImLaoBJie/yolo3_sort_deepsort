@@ -16,7 +16,8 @@ DeepSort的实现借鉴：[theAIGuysCode/yolov3_deepsort](https://github.com/the
 
 2. [SIMPLE ONLINE AND REALTIME TRACKING WITH A DEEP ASSOCIATION METRIC](https://arxiv.org/pdf/1703.07402.pdf)
 
-演示视频：[Demo](https://www.bilibili.com/video/av56450343/)
+演示视频：[SORT](https://www.bilibili.com/video/av56450343/)
+[DEEPSORT](https://www.bilibili.com/video/BV16A411e7ih/)
 
 ---
 
