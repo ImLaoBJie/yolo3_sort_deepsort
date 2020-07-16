@@ -1,34 +1,43 @@
-# YOLOv3+SORT
+# YOLOv3+SORT+DeepSort
 
-# ½éÉÜ Introduction
+* Update 2020.7.16 å¢åŠ deepsortï¼Œå¹¶ä½œäº†å¤§é‡è°ƒæ•´
 
-YOLOV3¼°ÆäÑµÁ·µÄÊµÏÖ½è¼ø£º[qqwweee/keras-yolo3](https://github.com/qqwweee/keras-yolo3)
+# ä»‹ç» Introduction
 
-SORTµÄÊµÏÖ½è¼ø£º[abewley/sort](https://github.com/abewley/sort)
+YOLOV3åŠå…¶è®­ç»ƒçš„å®ç°å€Ÿé‰´ï¼š[qqwweee/keras-yolo3](https://github.com/qqwweee/keras-yolo3)
 
-²Î¿¼ÎÄÏ×£º[SIMPLE ONLINE AND REALTIME TRACKING](https://arxiv.org/pdf/1602.00763.pdf)
+SORTçš„å®ç°å€Ÿé‰´ï¼š[abewley/sort](https://github.com/abewley/sort)
 
-ÑİÊ¾ÊÓÆµ£º[Demo](https://www.bilibili.com/video/av56450343/)
+DeepSortçš„å®ç°å€Ÿé‰´ï¼š[theAIGuysCode/yolov3_deepsort](https://github.com/theAIGuysCode/yolov3_deepsort)
+
+å‚è€ƒæ–‡çŒ®ï¼š
+
+1. [SIMPLE ONLINE AND REALTIME TRACKING](https://arxiv.org/pdf/1602.00763.pdf)
+
+2. [SIMPLE ONLINE AND REALTIME TRACKING WITH A DEEP ASSOCIATION METRIC](https://arxiv.org/pdf/1703.07402.pdf)
+
+æ¼”ç¤ºè§†é¢‘ï¼š[Demo](https://www.bilibili.com/video/av56450343/)
 
 ---
 
-# ¸ã¿ìµã Quick Start
+# æå¿«ç‚¹ Quick Start
 
-1. ´ò¿ª`yolo_video.py`
+1. æ‰“å¼€`yolo_video.py`
 
-2. ĞŞ¸Ä`DEFAULTS`£¨¸öÈËÔ­Òò²»Ì«Ï²»¶ÓÃ`argparse`£©
+2. ä¿®æ”¹`DEFAULTS`ï¼ˆä¸ªäººåŸå› ä¸å¤ªå–œæ¬¢ç”¨`argparse`ï¼‰
 
 ```
 DEFAULTS = {
         "model_path": './model_h5/yolo.h5',
         "anchors_path": './model_data/yolo_anchors.txt',
         "classes_path": './model_data/coco_classes.txt',
+        "deepsort_model": './model_data/mars-small128.pb',
         "gpu_num": 1,
-        "image": False,
-        "tracker": True,
+        "image": False,  # å¦‚æœæ­¤å¤„è®¾ç½®äº†Trueï¼Œ"tracker"åˆ™è¢«å¿½ç•¥
+        "tracker": 'deepsort',  # æ­¤å¤„æ ¹æ®éœ€è¦ä¸º'sort'æˆ–'deepsort'
         "write_to_file": True,
-        "input": './input/Demo2_tiny.mp4',
-        "output": './output/Demo2_tiny.mp4',
+        "input": './input/your_video.format',
+        "output": './output/your_video.format',
         "output_path": './output/',
         "score": 0.4,  # threshold
         "iou": 0.4,  # threshold
@@ -36,41 +45,44 @@ DEFAULTS = {
     }
 ```
 
-3. ÔËĞĞ`yolo_video.py`£¬½á¹û¿ÉÔÚ`"output_path"`ÖĞÖ¸¶¨µÄÎÄ¼ş¼Ğ²é¿´
+3. è¿è¡Œ`yolo_video.py`ï¼Œç»“æœå¯åœ¨`"output_path"`ä¸­æŒ‡å®šçš„æ–‡ä»¶å¤¹æŸ¥çœ‹
 
 ```
 python yolo_video.py
 ```
 
-4. Èç¹ûÏëÊÊÓÃÇáÁ¿¼¶µÄYOLOv3Ä£ĞÍ£¬ĞŞ¸Ä'"model_path"'ºÍ'"anchors_path"'¼´¿É
+4. å¦‚æœæƒ³é€‚ç”¨è½»é‡çº§çš„YOLOv3æ¨¡å‹ï¼Œä¿®æ”¹'"model_path"'å’Œ'"anchors_path"'å³å¯
 
-*¹ØÓÚYOLOV3µÄÄÚÈİ£¬¿ÉÒÔ²é¿´[YOLO WEBSITE](https://pjreddie.com/darknet/yolo/)
+*å…³äºYOLOV3çš„å†…å®¹ï¼Œå¯ä»¥æŸ¥çœ‹[YOLO WEBSITE](https://pjreddie.com/darknet/yolo/)
 
-*tiny-YOLOv3ÏÂÔØ£º[tiny-YOLOv3](https://pjreddie.com/media/files/yolov3-tiny.weights)
+*tiny-YOLOv3ä¸‹è½½ï¼š[tiny-YOLOv3](https://pjreddie.com/media/files/yolov3-tiny.weights)
 
-*YOLOv3ÏÂÔØ£º[YOLOv3](https://pjreddie.com/media/files/yolov3.weights)
+*YOLOv3ä¸‹è½½ï¼š[YOLOv3](https://pjreddie.com/media/files/yolov3.weights)
+
+*é¢„è®­ç»ƒçš„DeepSortç½‘ç»œï¼šGoogle Drive: [DeepSort](https://drive.google.com/open?id=18fKzfqnqhqW3s9zwsCbnVJ5XF2JFeqMp), BaiduDisk: [DeepSort](https://pan.baidu.com/s/1B4xKXYWckM4TLIg6WGW6uw)  pw:9i6p
 
 ---
 
-# ²ÎÊıº¬Òå Parameter
+# å‚æ•°å«ä¹‰ Parameter
 
 ```
-model_path  # h5ÎÄ¼şÂ·¾¶
-anchors_path  # anchorµÄÂ·¾¶
-classes_path  # ´æ·ÅÊ¶±ğ¶ÔÏóÀà±ğµÄÂ·¾¶
-gpu_num  # gpuÊı
-image  # ´¦Àívideo(False)»ò´¦ÀíÍ¼Æ¬(True)
-tracker  # ÊÇ·ñÊ¹ÓÃ×·×Ù
-write_to_file  # ÊÇ·ñĞ´Èëµ½ÎÄ¼ş
-input  # videoµÄÂ·¾¶
-output  # Êä³övideoµÄÂ·¾¶
-output_path  # ÆäËûÎÄ¼şoutputµÄÂ·¾¶
-score  # ·ÖÊıµÍÓÚ¸ÃãĞÖµµÄÎïÌå»á±»ºöÂÔ
-iou  # iouµÍÓÚ¸ÃãĞÖµµÄÎïÌå»á±»ºöÂÔ
-repeat_iou  # È¥³ıÖØ¸´bounding box
+model_path  # h5æ–‡ä»¶è·¯å¾„
+anchors_path  # anchorçš„è·¯å¾„
+classes_path  # å­˜æ”¾è¯†åˆ«å¯¹è±¡ç±»åˆ«çš„è·¯å¾„
+deepsort_model  # DeepSorté¢„è®­ç»ƒæƒé‡å­˜æ”¾è·¯å¾„
+gpu_num  # gpuæ•°
+image  # å¤„ç†video(False)æˆ–å¤„ç†å›¾ç‰‡(True)
+tracker  # æ˜¯å¦ä½¿ç”¨è¿½è¸ª
+write_to_file  # æ˜¯å¦å†™å…¥åˆ°æ–‡ä»¶
+input  # videoçš„è·¯å¾„
+output  # è¾“å‡ºvideoçš„è·¯å¾„
+output_path  # å…¶ä»–æ–‡ä»¶outputçš„è·¯å¾„
+score  # åˆ†æ•°ä½äºè¯¥é˜ˆå€¼çš„ç‰©ä½“ä¼šè¢«å¿½ç•¥
+iou  # iouä½äºè¯¥é˜ˆå€¼çš„ç‰©ä½“ä¼šè¢«å¿½ç•¥
+repeat_iou  # å»é™¤é‡å¤bounding box
 ```
 
-*Ğ´Èëµ½ÎÄ¼şµÄ¸ñÊ½Îª£º
+*å†™å…¥åˆ°æ–‡ä»¶çš„æ ¼å¼ä¸ºï¼š
 
 ```
 <frame>, <id>, <bb_left>, <bb_top>, <bb_width>, <bb_height>, <conf>, <x>, <y>, <z>
@@ -78,62 +90,54 @@ repeat_iou  # È¥³ıÖØ¸´bounding box
 
 ---
 
-# ÑµÁ·×Ô¼ºµÄÄ£ĞÍ Training
+# è®­ç»ƒè‡ªå·±çš„æ¨¡å‹ Training
 
-Ñ¡È¡µÄÍ¼Æ¬´ÓCIFAR-100 datasetÖĞÌáÈ¡£¬ÓÉÓÚÖ÷ÒªÑĞ¾¿¶ÔÏóÊÇ½»Í¨·½ÃæµÄ£¬Òò´ËÑ¡È¡µÄÎïÌåÖÖÀàÖ÷ÒªÎ§ÈÆ³µÁ¾ºÍ
-ÈË£¬ÏêÏ¸·ÖÀà¼û`model_data/cifar_classes.txt`
+é€‰å–çš„å›¾ç‰‡ä»CIFAR-100 datasetä¸­æå–ï¼Œç”±äºä¸»è¦ç ”ç©¶å¯¹è±¡æ˜¯äº¤é€šæ–¹é¢çš„ï¼Œå› æ­¤é€‰å–çš„ç‰©ä½“ç§ç±»ä¸»è¦å›´ç»•è½¦è¾†å’Œ
+äººï¼Œè¯¦ç»†åˆ†ç±»è§`model_data/cifar_classes.txt`
 
-CIFARÊı¾İ¼¯¿ÉÔÚ´ËÍøÕ¾²é¿´£º[The CIFAR-10 and CIFAR-100](http://www.cs.toronto.edu/~kriz/cifar.html)
+CIFARæ•°æ®é›†å¯åœ¨æ­¤ç½‘ç«™æŸ¥çœ‹ï¼š[The CIFAR-10 and CIFAR-100](http://www.cs.toronto.edu/~kriz/cifar.html)
 
-CIFAR-100 datasetÏÂÔØ£º[CIFAR-100 python version](http://www.cs.toronto.edu/~kriz/cifar-100-python.tar.gz)
+CIFAR-100 datasetä¸‹è½½ï¼š[CIFAR-100 python version](http://www.cs.toronto.edu/~kriz/cifar-100-python.tar.gz)
 
-1. ¿ÉÍ¨¹ıĞŞ¸Ä`read_data_cifar100.py`È·¶¨ÑµÁ·Êı¾İ¼¯µÄÎïÌåÀà±ğ
+1. å¯é€šè¿‡ä¿®æ”¹`read_data_cifar100.py`ç¡®å®šè®­ç»ƒæ•°æ®é›†çš„ç‰©ä½“ç±»åˆ«
 
 ```
 REMAIN = list(np.concatenate([[11, 35, 46, 98], [8, 13, 48, 58], [81, 85]]))
 ```
 
-2. ÔËĞĞtrain.py
+2. è¿è¡Œtrain.py
 
 ```
 python train.py
 ```
 
-¿É×ÔĞĞĞŞ¸Ä`epochs`£¬`batch_size`
+å¯è‡ªè¡Œä¿®æ”¹`epochs`ï¼Œ`batch_size`
 
-3. ¿ÉÏÈÊ¹ÓÃÑµÁ·ºÃµÄYOLOv3Ä£ĞÍ`yolo.h5`»ñÈ¡bounding boxÊı¾İ£¬ÔÙÊ¹ÓÃ`kmeans_anchors.py`
-¼ÆËã»ñµÃanchors
+3. å¯å…ˆä½¿ç”¨è®­ç»ƒå¥½çš„YOLOv3æ¨¡å‹`yolo.h5`è·å–bounding boxæ•°æ®ï¼Œå†ä½¿ç”¨`kmeans_anchors.py`
+è®¡ç®—è·å¾—anchors
 
 ---
 
 # TIPS
 
-1. »·¾³ Environment
+1. ç¯å¢ƒ Environment
 
- * Èí
+ * ä¸»è¦ä¾èµ–
 
-    * python 3.6.5
-    * Keras 2.1.5
-    * tensorflow-gpu 1.11.0
-
- * Ó²
-
-    * NVIDIA GTX 850M DDR5
-    * CUDA 9.0.176
-    * Driver 390.65
+    * python 3.6
+    * Keras 2.3.1
+    * tensorflow-gpu 1.13.0
+    * numpy 1.17.0
     
-2. ÏÔ¿¨ºÍÄÚ´æ£¨8GB£©Ì«À­Õ¢ÁË£¬ÏÔ´æ4GBÑµÁ·YOLOÉõÖÁÊÇtiny_YOLOÊ±£¬epoch³¬¹ı10Ö±½Ó¾ÍResourceExhaustError£¬
-´¦ÀíÊÓÆµ»¹ÊÇÃ»ÎÊÌâµÄ£¬ĞÔÄÜÔÚ3fp×óÓÒ£¬CPUÃ»Ê¹ÓÃ¹ı£¬¹À¼Æ»á¸ü¼Ó¹êËÙ°É¡£
-ËùÒÔÄãÎÊÎÒÓĞÃ»ÓĞÕë¶ÔvehicleºÍpedestrianÑµÁ·ºÃµÄYOLO»òÕßtiny_YOLOÄ£ĞÍ£¬ÎÒÒ²ºÜÄÑÊÜ:worried:
+    (è¾ƒä½ç‰ˆæœ¬è²Œä¼¼ä¹Ÿæ”¯æŒ)
 
-3. È±ÉÙ`openh264-1.8.0-win64.dll`¿ÉÄÜ»á·¢ÉúÎ´Öª´íÎó£¬Òò´ËĞèÒª½«´ËÎÄ¼şºÍ`python yolo_video.py`·ÅÖÃÔÚ
-Í¬Ò»Ä¿Â¼ÏÂ£¨Ã²ËÆÉÙÁËÒ²Ã»É¶ÊÂ£©
+3. ç¼ºå°‘`openh264-1.8.0-win64.dll`å¯èƒ½ä¼šå‘ç”ŸæœªçŸ¥é”™è¯¯ï¼Œå› æ­¤éœ€è¦å°†æ­¤æ–‡ä»¶å’Œ`python yolo_video.py`æ”¾ç½®åœ¨
+åŒä¸€ç›®å½•ä¸‹ï¼ˆè²Œä¼¼å°‘äº†ä¹Ÿæ²¡å•¥äº‹ï¼‰
 
-4. ÔİÊ±²»»á¸ãDeepSortÀïµÄÍ¼ÏñÌØÕ÷³éÈ¡£¬Ö»ÓÃSORTµÄ»°»áµ¼ÖÂID Switch¹ıÓÚÆµ·±£¬¶ÔÓÚÓĞÕÚµ²Îï¡¢Ë«ÏòÖØ½»Í¨Á÷µÈ
-Çé¿ö£¬ID»á·Ç³£²»×¼È·
+4. DeepSortèƒ½è§£å†³çŸ­æ—¶é®æŒ¡é—®é¢˜ï¼Œè§£å†³ä¸äº†é•¿æ—¶é—´objectæ¶ˆå¤±æˆ–è¢«é®æŒ¡é—®é¢˜
 
-5. **DEMO**ÉÏ´«ÖÁ[°Ù¶ÈÔÆ](https://pan.baidu.com/s/1VLKI8OGDbzsfqtzMe1amxg) PW: pb34
+5. **DEMO**ä¸Šä¼ è‡³[ç™¾åº¦äº‘](https://pan.baidu.com/s/1VLKI8OGDbzsfqtzMe1amxg) PW: pb34
 
-6. ÓĞµãÀÁ£¬ÒÔºóÅª¸öÓ¢ÓïREADME  I am exhausted, En version to be done.
+6. **MOT_DEMO** [Multiple Object Tracking Benchmark](https://motchallenge.net/data/MOT16/)
 
 
