@@ -118,6 +118,7 @@ dmypy.json
 *.weights
 *.dat
 *.webm
+*.png
 
 # Weights
 *.h5
