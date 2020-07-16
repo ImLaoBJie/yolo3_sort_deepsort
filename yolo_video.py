@@ -16,8 +16,8 @@ DEFAULTS = {
         "image": False,  # 如果此处设置了True，"tracker"则被忽略
         "tracker": 'deepsort',  # 此处根据需要为'sort'或'deepsort'
         "write_to_file": True,
-        "input": './input/MOT16-14-raw.webm',
-        "output": './output/MOT16-14-raw.webm',
+        "input": './input/your_video.format',
+        "output": './output/your_video.format',
         "output_path": './output/',
         "score": 0.4,  # threshold
         "iou": 0.4,  # threshold
