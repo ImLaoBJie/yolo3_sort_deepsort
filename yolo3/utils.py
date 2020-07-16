@@ -6,6 +6,8 @@ from PIL import Image
 import numpy as np
 from matplotlib.colors import rgb_to_hsv, hsv_to_rgb
 
+from sort import iou
+
 
 def compose(*funcs):
     """Compose arbitrarily many functions, evaluated left to right.
@@ -124,3 +126,44 @@ def get_random_data(annotation_line, input_shape, random=True, max_boxes=20, jit
         box_data[:len(box)] = box
 
     return image_data, box_data
+
+
+def delete_repeat_bbox(out_boxes, out_scores, out_classes, iou_threshold):
+    '''Delete the same bboxes marked as different classes'''
+    to_del = []
+    for i in range(0, len(out_classes) - 1):
+        for j in range(i + 1, len(out_classes)):
+            if (i not in to_del) and (j not in to_del):
+                # bounding box 1
+                y1_1, x1_1, y2_1, x2_1 = out_boxes[i]
+                # bounding box 2
+                y1_2, x1_2, y2_2, x2_2 = out_boxes[j]
+                if iou([x1_1, y1_1, x2_1, y2_1], [x1_2, y1_2, x2_2, y2_2]) >= iou_threshold:
+                    if out_scores[i] >= out_scores[j]:
+                        to_del.append(j)
+                    else:
+                        to_del.append(i)
+
+    to_del = sorted(to_del)
+
+    for t in reversed(to_del):
+        out_boxes.pop(t)
+        out_scores.pop(t)
+        out_classes.pop(t)
+
+    return np.array(out_boxes), np.array(out_scores), np.array(out_classes)
+
+
+# boxes: np.array
+def convert_boxes(boxes):
+    # [x1, y1, x2, y2] ->
+    returned_boxes = []
+    for box in boxes:
+        box = box.astype(int)
+        box[2] = int(box[2]-box[0])  # width
+        box[3] = int(box[3]-box[1])  # height
+        box = box.astype(int)
+        box = box.tolist()
+        if box != [0, 0, 0, 0]:
+            returned_boxes.append(box)
+    return returned_boxes

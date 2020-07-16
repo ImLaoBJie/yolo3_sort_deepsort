@@ -1,19 +1,23 @@
 import sys
 import argparse
+
+import numpy as np
+
 from yolo import YOLO, detect_video
 from PIL import Image
-import sort
+
 
 DEFAULTS = {
         "model_path": './model_h5/yolo.h5',
         "anchors_path": './model_data/yolo_anchors.txt',
         "classes_path": './model_data/coco_classes.txt',
+        "deepsort_model": './model_data/mars-small128.pb',
         "gpu_num": 1,
-        "image": False,
-        "tracker": True,
+        "image": False,  # 如果此处设置了True，"tracker"则被忽略
+        "tracker": 'deepsort',  # 此处根据需要为'sort'或'deepsort'
         "write_to_file": True,
-        "input": './input/Demo2_tiny.mp4',
-        "output": './output/Demo2_tiny.mp4',
+        "input": './input/MOT16-14-raw.webm',
+        "output": './output/MOT16-14-raw.webm',
         "output_path": './output/',
         "score": 0.4,  # threshold
         "iou": 0.4,  # threshold
@@ -37,13 +41,14 @@ def detect_img(yolo):
         img = input('Input image filename:')
         try:
             image = Image.open(img)
+            image = np.asarray(image)
         except:
             print('Open Error! Try again!')
             continue
         else:
             # Initialization
-            mot_tracker = sort.Sort()
-            yolo.mot_tracker = mot_tracker
+            # mot_tracker = sort.Sort()
+            # yolo.mot_tracker = mot_tracker
             yolo.frame = 1
 
             if yolo.write_to_file:

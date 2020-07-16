@@ -1,15 +1,13 @@
 from __future__ import print_function
 
-from numba import jit
 import numpy as np
-from sklearn.utils.linear_assignment_ import linear_assignment
+from scipy.optimize import linear_sum_assignment
 from filterpy.kalman import KalmanFilter
 
 
-@jit
 def iou(bb_test, bb_gt):
     """
-    Computes IUO between two bboxes in the form [x1,y1,x2,y2]
+    Computes IOU between two bboxes in the form [x1,y1,x2,y2]
     """
     xx1 = np.maximum(bb_test[0], bb_gt[0])
     yy1 = np.maximum(bb_test[1], bb_gt[1])
@@ -21,31 +19,6 @@ def iou(bb_test, bb_gt):
     o = wh / ((bb_test[2] - bb_test[0]) * (bb_test[3] - bb_test[1])
               + (bb_gt[2] - bb_gt[0]) * (bb_gt[3] - bb_gt[1]) - wh)
     return o
-
-
-def delete_repeat_bbox(out_boxes, out_scores, out_classes, iou_threshold):
-    to_del = []
-    for i in range(0, len(out_classes) - 1):
-        for j in range(i + 1, len(out_classes)):
-            if (i not in to_del) and (j not in to_del):
-                # bounding box 1
-                y1_1, x1_1, y2_1, x2_1 = out_boxes[i]
-                # bounding box 2
-                y1_2, x1_2, y2_2, x2_2 = out_boxes[j]
-                if iou([x1_1, y1_1, x2_1, y2_1], [x1_2, y1_2, x2_2, y2_2]) >= iou_threshold:
-                    if out_scores[i] >= out_scores[j]:
-                        to_del.append(j)
-                    else:
-                        to_del.append(i)
-
-    to_del = sorted(to_del)
-
-    for t in reversed(to_del):
-        out_boxes.pop(t)
-        out_scores.pop(t)
-        out_classes.pop(t)
-
-    return np.array(out_boxes), np.array(out_scores), np.array(out_classes)
 
 
 def convert_bbox_to_z(bbox):
@@ -152,7 +125,10 @@ def associate_detections_to_trackers(detections, trackers, iou_threshold=0.3):
     for d, det in enumerate(detections):
         for t, trk in enumerate(trackers):
             iou_matrix[d, t] = iou(det, trk)
-    matched_indices = linear_assignment(-iou_matrix)
+    row_ind, col_ind = linear_sum_assignment(-iou_matrix)
+    matched_indices = np.zeros(shape=(row_ind.shape[0], 2), dtype=np.int64)
+    matched_indices[:, 0] = row_ind
+    matched_indices[:, 1] = col_ind
 
     unmatched_detections = []
     for d, det in enumerate(detections):
@@ -246,30 +222,3 @@ class Sort(object):
             return np.concatenate(ret)
         else:
             return np.empty((0, 5))
-
-
-def sort_image(sort_class, out_boxes, out_scores, out_classes, image_mode):
-    dets = []
-
-    for i in range(0, len(out_boxes)):
-        dets.append([out_boxes[i][1], out_boxes[i][0], out_boxes[i][3], out_boxes[i][2], out_scores[i], out_classes[i]])
-
-    dets = np.array(dets)
-
-    # Initialization
-    if image_mode:
-        KalmanBoxTracker.count = 0
-    trackers = sort_class.update(dets)
-
-    out_boxes = []
-    out_scores = []
-    out_classes = []
-    object_id = []
-    # d [x1,y1,x2,y2,object_id,score,type]
-    for d in trackers:
-        out_boxes.append(list([d[1], d[0], d[3], d[2]]))
-        object_id.append(int(d[4]))
-        out_scores.append(float(d[5]))
-        out_classes.append(int(d[6]))
-
-    return np.array(out_boxes), np.array(out_scores), np.array(out_classes), np.array(object_id)

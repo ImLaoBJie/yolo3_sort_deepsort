@@ -116,8 +116,12 @@ dmypy.json
 # Demo
 *.mp4
 *.weights
-*.h5
 *.dat
+*.webm
+
+# Weights
+*.h5
+*.pb
 
 __pycache__/
 .idea/
