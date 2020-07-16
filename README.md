@@ -1,6 +1,6 @@
 # YOLOv3+SORT+DeepSort
 
-* Update 2020.7.16 增加deepsort
+* Update 2020.7.16 增加deepsort，并作了大量调整
 
 # 介绍 Introduction
 
